@@ -1,35 +1,7 @@
 // ==========================================
 // 1. CONFIGURATION (Dictionnaires)
 // ==========================================
-const translations = {
-    fr: {
-        placeholder: "Pseudo#Tag (ex: Hide on bush #KR1)",
-        quickTrainTitle: "Entraînement Rapide",
-        quickTrainDesc: "Générer un entraînement basé sur le dernier match",
-        featCollateral: "Collatéral",
-        featCollateralDesc: "Lier plusieurs objectifs fitness",
-        loading: "Analyse des données Riot en cours...",
-        win: "VICTOIRE",
-        loss: "DÉFAITE",
-        exSquats: "Squats (Kills)",
-        exPushups: "Pompes (Morts)",
-        exAbs: "Abdos (Assists)"
-    },
-    en: {
-        placeholder: "Game Name#Tag (ex: Hide on bush #KR1)",
-        quickTrainTitle: "Quick Training",
-        quickTrainDesc: "Generate a workout based on your last match",
-        featCollateral: "Collateral",
-        featCollateralDesc: "Link multiple fitness goals",
-        loading: "Analyzing Riot data...",
-        win: "VICTORY",
-        loss: "DEFEAT",
-        exSquats: "Squats (Kills)",
-        exPushups: "Push-ups (Deaths)",
-        exAbs: "Crunches (Assists)"
-    },
-    // ... j'ai gardé ta structure exacte pour 'es'
-};
+let translations = {}; // On crée une variable vide qui va recevoir notre JSON
 
 const gameThemes = {
     lol: { quote: "League of legends", colorClass: "color-lol" },
@@ -41,18 +13,27 @@ const gameThemes = {
 // 2. INITIALISATION AU DÉMARRAGE
 // ==========================================
 // Ce bloc regroupe tout ce qui doit se passer quand la page se charge
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     
-    // --- Initialisation de la langue ---
+    // --- 1. Chargement du fichier JSON ---
+    try {
+        const response = await fetch('../Assets/translations.json');
+        translations = await response.json();
+    } catch (error) {
+        console.error("Erreur lors du chargement des traductions :", error);
+        return; // On arrête tout si on ne trouve pas les textes
+    }
+
+    // --- 2. Initialisation de la langue ---
     const savedLang = localStorage.getItem('preferredLang') || 'fr';
     document.getElementById('lang-select').value = savedLang;
-    changeLanguage(savedLang);
+    changeLanguage(savedLang); // Maintenant que "translations" est rempli, ça va marcher !
 
-    // --- Initialisation du thème ---
+    // --- 3. Initialisation du thème ---
     const lastGame = localStorage.getItem('selectedGame') || 'lol';
     setTheme(lastGame);
 
-    // --- Écouteurs de clics pour la bannière des jeux ---
+    // --- 4. Écouteurs de clics pour la bannière des jeux ---
     const lolBtn = document.querySelector('.game-item.lol');
     const tftBtn = document.querySelector('.game-item.tft');
     const valoBtn = document.querySelector('.game-item.valorant');
@@ -61,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(tftBtn) tftBtn.onclick = () => setTheme('tft');
     if(valoBtn) valoBtn.onclick = () => setTheme('valorant');
 
-    // --- Écouteur pour dégriser le bouton d'entraînement ---
+    // --- 5. Écouteur pour dégriser le bouton d'entraînement ---
     document.getElementById('riotId').addEventListener('input', checkInputValidity);
 });
 

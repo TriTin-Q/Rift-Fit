@@ -1,0 +1,41 @@
+{
+  "fr": {
+    "placeholder": "Pseudo#Tag (ex: Hide on bush #KR1)",
+    "quickTrainTitle": "Entraînement Rapide",
+    "quickTrainDesc": "Générer un entraînement basé sur le dernier match",
+    "featCollateral": "Collatéral",
+    "featCollateralDesc": "Lier plusieurs objectifs fitness",
+    "loading": "Analyse des données Riot en cours...",
+    "win": "VICTOIRE",
+    "loss": "DÉFAITE",
+    "exSquats": "Squats (Kills)",
+    "exPushups": "Pompes (Morts)",
+    "exAbs": "Abdos (Assists)"
+  },
+  "en": {
+    "placeholder": "Game Name#Tag (ex: Hide on bush #KR1)",
+    "quickTrainTitle": "Quick Training",
+    "quickTrainDesc": "Generate a workout based on your last match",
+    "featCollateral": "Collateral",
+    "featCollateralDesc": "Link multiple fitness goals",
+    "loading": "Analyzing Riot data...",
+    "win": "VICTORY",
+    "loss": "DEFEAT",
+    "exSquats": "Squats (Kills)",
+    "exPushups": "Push-ups (Deaths)",
+    "exAbs": "Crunches (Assists)"
+  },
+  "es": {
+    "placeholder": "ID de Riot#Tag (ej: Hide on bush #KR1)",
+    "quickTrainTitle": "Entrenamiento Rápido",
+    "quickTrainDesc": "Generar un entrenamiento basado en el último partido",
+    "featCollateral": "Colateral",
+    "featCollateralDesc": "Vincular múltiples objetivos de fitness",
+    "loading": "Analizando datos de Riot...",
+    "win": "VICTORIA",
+    "loss": "DERROTA",
+    "exSquats": "Sentadillas (Kills)",
+    "exPushups": "Flexiones (Muertes)",
+    "exAbs": "Abdominales (Asistencias)"
+  }
+}
