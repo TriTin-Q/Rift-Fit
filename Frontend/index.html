@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>RiftFit</title>
+    <link href="style.css" rel="stylesheet" />
+
+</head>
+<body>
+    <script src="app.js"></script>
+
+    <div class="language-switcher">
+        <select id="lang-select" onchange="changeLanguage(this.value)">
+            <option value="fr">FR</option>
+            <option value="en">EN</option>
+            <option value="es">ES</option>
+        </select>
+    </div>
+
+
+    <div class="logo-container">
+        <h1>RIFT<span>FIT</span></h1>
+    </div>
+
+<div class="search-wrapper">
+        <select id="region" class="region-select">
+            <option value="europe">Europe</option>
+            <option value="americas">Americas</option>
+            <option value="asia">Asia</option>
+        </select>
+        <div class="divider"></div>
+        <input type="text" id="riotId" class="search-input" data-i18n="placeholder" placeholder="Game Name#Tag (ex: Faker#KR1)">
+        <button class="search-btn" onclick="generateWorkout()">.FIT</button>
+    </div>
+
+    <div class="quick-train-box" onclick="generateWorkout()">
+        <h2 data-i18n="quickTrainTitle">Quick Training</h2>
+        <p data-i18n="quickTrainDesc">Générer un entraînement basé sur le dernier match</p>
+    </div>
+
+    <div class="features-grid">
+        <div class="feature-card">
+            <h3 data-i18n="featCollateral">Collateral</h3>
+            <p data-i18n="featCollateralDesc">Link multiple fitness goals</p>
+        </div>
+        <div class="feature-card">
+            <h3>Based on your weakness</h3>
+            <p>Target your worst stats</p>
+        </div>
+        <div class="feature-card">
+            <h3>Complete Workout</h3>
+            <p>Full-body routine</p>
+        </div>
+    </div>
+
+    <div id="loading" data-i18n="loading">Analyse des données Riot en cours...</div>
+
+    <div id="workout-board">
+        <div id="game-status" data-i18n="loss">DÉFAITE</div>
+        <h3 id="player-title" style="margin: 0; color: var(--text-main);">Champion (Rôle)</h3>
+        <div class="stats-kda" id="player-kda">KDA : 0 / 0 / 0</div>
+        
+        <div class="exercise-grid">
+            <div class="exercise-item">
+                <div class="ex-num" id="nb-squats">0</div>
+                <div class="ex-label" data-i18n="exSquats">Squats (Kills)</div>
+            </div>
+            <div class="exercise-item">
+                <div class="ex-num" id="nb-pompes">0</div>
+                <div class="ex-label" data-i18n="exPushups">Pompes (Morts)</div>
+            </div>
+            <div class="exercise-item">
+                <div class="ex-num" id="nb-abdos">0</div>
+                <div class="ex-label" data-i18n="exAbs">Abdos (Assists)</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
