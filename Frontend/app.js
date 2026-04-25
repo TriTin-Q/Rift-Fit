@@ -15,6 +15,15 @@ const gameThemes = {
 // Ce bloc regroupe tout ce qui doit se passer quand la page se charge
 document.addEventListener('DOMContentLoaded', async () => {
     
+    // --- Initialisation de la difficulté ---
+    const savedDiff = localStorage.getItem('preferredDiff') || 'gold';
+    document.getElementById('difficulty').value = savedDiff;
+    
+    // On écoute le changement pour sauvegarder
+    document.getElementById('difficulty').onchange = (e) => {
+        localStorage.setItem('preferredDiff', e.target.value);
+    };
+
     // --- 1. Chargement du fichier JSON ---
     try {
         const response = await fetch('../Assets/translations.json');
@@ -91,67 +100,151 @@ function checkInputValidity(e) {
 // ==========================================
 // 4. CŒUR DU PROGRAMME : API & CALCULS
 // ==========================================
+
+
+// --- L'AIGUILLEUR (S'active quand on clique sur "Quick Training") ---
 async function generateWorkout() {
-    const region = document.getElementById('region').value;
+    const currentGame = localStorage.getItem('selectedGame') || 'lol';
+    const userDiff = document.getElementById('difficulty').value; // On lit la difficulté ici
+    console.log(JSON.stringify(currentGame));
+    // On bloque le bouton s'il manque le #
     const fullRiotId = document.getElementById('riotId').value.trim();
-    
-    if (!fullRiotId.includes('#')) return; // Sécurité supplémentaire
-    
-    const parts = fullRiotId.split('#');
-    const gameName = parts[0];
-    const tagLine = parts[1];
+    if (!fullRiotId.includes('#')) return; 
 
-    const loading = document.getElementById('loading');
-    const workoutBoard = document.getElementById('workout-board');
-    const gameStatusDiv = document.getElementById('game-status');
-
-    loading.style.display = 'block';
-    workoutBoard.style.display = 'none';
+    // On affiche le chargement
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('workout-board').style.display = 'none';
 
     try {
-        const response = await fetch(`http://localhost:3000/api/last-match/${region}/${gameName}/${tagLine}`);
-        const data = await response.json();
-
-        if (data.error) throw new Error(data.error);
-
-        // --- Calculs Sportifs ---
-        const multiplicateur = data.victoire ? 0.8 : 1.5;
-        const totalSquats = Math.ceil(Math.round((data.kills)) * multiplicateur);
-        const totalPompes = Math.ceil(Math.round((data.morts)) * multiplicateur);
-        const totalAbdos = Math.ceil(Math.round((data.assists)) * multiplicateur);
-
-        // --- Mise à jour du KDA et de l'image de fond ---
-        document.getElementById('player-title').innerText = `${data.champion} (${data.role})`;
-        document.getElementById('player-kda').innerText = `KDA : ${data.kills} / ${data.morts} / ${data.assists}`;
-        
-        let champImageName = data.champion.replace(/['\s.]/g, '');
-        if (champImageName === 'Wukong') champImageName = 'MonkeyKing';
-        
-        workoutBoard.style.setProperty('--champ-bg', `url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champImageName}_0.jpg')`);
-
-        // --- Gestion de la victoire/défaite ---
-        const currentLang = localStorage.getItem('preferredLang') || 'fr';
-        if (data.victoire) {
-            gameStatusDiv.innerText = translations[currentLang].win;
-            gameStatusDiv.className = "status-win";
-            gameStatusDiv.setAttribute('data-i18n', 'win'); 
-        } else {
-            gameStatusDiv.innerText = translations[currentLang].loss;
-            gameStatusDiv.className = "status-loss";
-            gameStatusDiv.setAttribute('data-i18n', 'loss');
+        if (currentGame === 'lol') {
+            await generateLoLWorkout(userDiff, fullRiotId);
+        } 
+        else if (currentGame === 'tft') {
+            await generateTFTWorkout(userDiff, fullRiotId);
         }
-
-        // --- Affichage des résultats ---
-        document.getElementById('nb-squats').innerText = totalSquats;
-        document.getElementById('nb-pompes').innerText = totalPompes;
-        document.getElementById('nb-abdos').innerText = totalAbdos;
-
-        loading.style.display = 'none';
-        workoutBoard.style.display = 'block';
-        workoutBoard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
     } catch (error) {
-        loading.style.display = 'none';
+        document.getElementById('loading').style.display = 'none';
         alert("Erreur : " + error.message);
     }
+}
+
+// --- LA LOGIQUE LEAGUE OF LEGENDS ---
+async function generateLoLWorkout(difficulty, fullRiotId) {
+    const region = document.getElementById('region').value;
+    const [gameName, tagLine] = fullRiotId.split('#');
+
+    const response = await fetch(`http://localhost:3000/api/last-match/${region}/${gameName}/${tagLine}`);
+    const data = await response.json();
+    if (data.error) throw new Error(data.error);
+
+    // 1. Réglages de difficulté
+    const difficultySettings = {
+        iron: { base: 2, ratio: 0.7 },
+        gold: { base: 5, ratio: 1.0 },
+        challenger: { base: 10, ratio: 2.0 }
+    };
+    const config = difficultySettings[difficulty];
+
+    // 2. Calculs sportifs LoL
+    const multiplicateur = data.victoire ? 0.8 : 1.5;
+    const totalSquats = Math.ceil((data.kills <= 1 ? config.base : data.kills) * config.ratio * multiplicateur);
+    const totalPompes = Math.ceil((data.morts <= 1 ? config.base : data.morts) * config.ratio * multiplicateur);
+    const totalAbdos  = Math.ceil((data.assists <= 1 ? config.base : data.assists) * config.ratio * multiplicateur);
+
+    // 3. Mise à jour de l'UI (Textes, KDA, Image)
+    document.getElementById('player-title').innerText = `${data.champion} (${data.role})`;
+    document.getElementById('player-kda').innerText = `KDA : ${data.kills} / ${data.morts} / ${data.assists}`;
+    
+    let champImageName = data.champion.replace(/['\s.]/g, '');
+    if (champImageName === 'Wukong') champImageName = 'MonkeyKing';
+    document.getElementById('workout-board').style.setProperty('--champ-bg', `url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champImageName}_0.jpg')`);
+
+    // 4. Gestion Victoire/Défaite
+    updateGameStatus(data.victoire);
+
+    // 5. Affichage final
+    showWorkoutBoard(totalSquats, totalPompes, totalAbdos);
+}
+
+// --- LA LOGIQUE TFT ---
+async function generateTFTWorkout(difficulty, fullRiotId) {
+    const region = document.getElementById('region').value;
+    const [gameName, tagLine] = fullRiotId.split('#');
+
+    // 1. Appel à la nouvelle route TFT de ton serveur
+    const response = await fetch(`http://localhost:3000/api/tft-match/${region}/${gameName}/${tagLine}`);
+    const data = await response.json();
+    
+    if (data.error) throw new Error(data.error);
+
+    // 2. Réglages de difficulté (Identiques à LoL pour la cohérence)
+    const difficultySettings = {
+        iron: { base: 2, ratio: 0.5 },
+        gold: { base: 5, ratio: 1.0 },
+        challenger: { base: 10, ratio: 1.5 }
+    };
+    const config = difficultySettings[difficulty];
+
+    // 3. Calcul du Multiplicateur selon ton barème (Top 1 à 8)
+    let placementMultiplicateur = 1;
+    switch (data.placement) {
+        case 1: placementMultiplicateur = 0.6; break;
+        case 2: placementMultiplicateur = 0.8; break;
+        case 3: placementMultiplicateur = 1.0; break;   
+        case 4: placementMultiplicateur = 1.0; break;
+        case 5: placementMultiplicateur = 1.2; break;
+        case 6: placementMultiplicateur = 1.4; break;
+        case 7: placementMultiplicateur = 1.4; break;
+        case 8: placementMultiplicateur = 1.5; break;
+    }
+
+    // 4. Calculs sportifs TFT basés sur tes idées
+    // Pompes : Éliminations | Squats : Traits | Abdos : Niveau
+    const totalPompes = Math.ceil((config.base - data.players_eliminated + data.traits_active) * config.ratio * placementMultiplicateur * 0.5) <= config.base ? config.base : Math.ceil((config.base - data.players_eliminated + data.traits_active) * config.ratio * placementMultiplicateur * 0.6);
+    const totalSquats = Math.ceil((config.base - data.players_eliminated + data.traits_active) * config.ratio * placementMultiplicateur * 0.8) <= config.base ? config.base : Math.ceil((config.base - data.players_eliminated + data.traits_active) * config.ratio * placementMultiplicateur * 0.8);
+    const totalAbdos  = Math.ceil((config.base - data.players_eliminated + data.traits_active) * config.ratio * placementMultiplicateur) <= config.base ? config.base : Math.ceil((config.base - data.players_eliminated + data.traits_active) * config.ratio * placementMultiplicateur);
+
+    // 5. Mise à jour de l'UI
+    // On affiche le placement au lieu du KDA
+    const currentLang = localStorage.getItem('preferredLang') || 'fr';
+    const placementText = currentLang === 'fr' ? `TOP ${data.placement}` : `RANK ${data.placement}`;
+    
+    document.getElementById('player-title').innerText = `Level ${data.level} Tactician`;
+    document.getElementById('player-kda').innerText = `${placementText} | ${data.traits_active} Traits`;
+    
+    // Image de fond : On utilise une image générique de TFT ou de la petite légende si dispo
+    document.getElementById('workout-board').style.setProperty('--champ-bg', `url('https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/hextech-images/tft_item_tome_of_traits.png')`);
+
+    // 6. Gestion Victoire/Défaite (Victoire si Top <= 4)
+    updateGameStatus(data.placement <= 4);
+
+    // 7. Affichage final
+    showWorkoutBoard(totalSquats, totalPompes, totalAbdos);
+}
+
+// --- FONCTIONS UTILITAIRES POUR LE DASHBOARD ---
+function updateGameStatus(isWin) {
+    const gameStatusDiv = document.getElementById('game-status');
+    const currentLang = localStorage.getItem('preferredLang') || 'fr';
+
+    if (isWin) {
+        gameStatusDiv.innerText = translations[currentLang]?.win || "VICTOIRE";
+        gameStatusDiv.className = "status-win";
+        gameStatusDiv.setAttribute('data-i18n', 'win'); 
+    } else {
+        gameStatusDiv.innerText = translations[currentLang]?.loss || "DÉFAITE";
+        gameStatusDiv.className = "status-loss";
+        gameStatusDiv.setAttribute('data-i18n', 'loss');
+    }
+}
+
+function showWorkoutBoard(squats, pompes, abdos) {
+    document.getElementById('nb-squats').innerText = squats;
+    document.getElementById('nb-pompes').innerText = pompes;
+    document.getElementById('nb-abdos').innerText = abdos;
+
+    const workoutBoard = document.getElementById('workout-board');
+    document.getElementById('loading').style.display = 'none';
+    workoutBoard.style.display = 'block';
+    workoutBoard.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }

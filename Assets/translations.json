@@ -10,7 +10,11 @@
     "loss": "DÉFAITE",
     "exSquats": "Squats (Kills)",
     "exPushups": "Pompes (Morts)",
-    "exAbs": "Abdos (Assists)"
+    "exAbs": "Abdos (Assists)",
+    "diffIron": "Débutant",
+    "diffGold": "Intermédiare",
+    "diffChallenger": "Avancé",
+    "exVariations": "(ou sur les genoux / assis-debout)"
   },
   "en": {
     "placeholder": "Game Name#Tag (ex: Hide on bush #KR1)",
@@ -23,7 +27,11 @@
     "loss": "DEFEAT",
     "exSquats": "Squats (Kills)",
     "exPushups": "Push-ups (Deaths)",
-    "exAbs": "Crunches (Assists)"
+    "exAbs": "Crunches (Assists)",
+    "diffIron": "Beginner",
+    "diffGold": "Intermediate",
+    "diffChallenger": "Advanced",
+    "exVariations": "(or on knees / box squats)"
   },
   "es": {
     "placeholder": "ID de Riot#Tag (ej: Hide on bush #KR1)",

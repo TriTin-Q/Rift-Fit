@@ -130,4 +130,44 @@ app.get('/api/last-match/:region/:gameName/:tagLine', async (req, res) => {
     }
 });
 
+// Nouvelle route pour le dernier match TFT
+app.get('/api/tft-match/:region/:name/:tag', async (req, res) => {
+    const { region, name, tag } = req.params;
+    const apiKey = process.env.RIOT_API_KEY;
+    
+    // Mapping des régions pour TFT (Americas, Asia, Europe)
+    const routingValue = region === 'europe' ? 'europe' : (region === 'asia' ? 'asia' : 'americas');
+
+    try {
+        // 1. Récupérer le PUUID
+        const accountRes = await fetch(`https://${routingValue}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${name}/${tag}?api_key=${apiKey}`);
+        const accountData = await accountRes.json();
+        const puuid = accountData.puuid;
+
+        // 2. Récupérer l'ID du dernier match TFT
+        const matchIdsRes = await fetch(`https://${routingValue}.api.riotgames.com/tft/match/v1/matches/by-puuid/${puuid}/ids?count=1&api_key=${apiKey}`);
+        const matchIds = await matchIdsRes.json();
+        const lastMatchId = matchIds[0];
+
+        // 3. Récupérer les détails du match
+        const matchDetailRes = await fetch(`https://${routingValue}.api.riotgames.com/tft/match/v1/matches/${lastMatchId}?api_key=${apiKey}`);
+        const matchData = await matchDetailRes.json();
+
+        // 4. Chercher les stats du joueur spécifique dans les participants
+        const participant = matchData.info.participants.find(p => p.puuid === puuid);
+
+        // 5. Envoyer les données filtrées au Front-end
+        res.json({
+            placement: participant.placement,
+            level: participant.level,
+            players_eliminated: participant.players_eliminated,
+            traits_active: participant.traits.filter(t => t.style > 0).length, // Seulement les traits activés (Bronze+)
+            gold_left: participant.gold_left
+        });
+
+    } catch (error) {
+        res.status(500).json({ error: "Impossible de récupérer les données TFT" });
+    }
+});
+
 app.listen(3000, () => console.log('✅ Serveur Backend lancé sur http://localhost:3000'));
