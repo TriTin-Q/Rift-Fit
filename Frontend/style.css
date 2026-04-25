@@ -1,171 +1,154 @@
-        /* --- DA OP.GG SOBER DARK THEME --- */
-        :root {
-            --bg-main: #1c1c1f;
-            --bg-card: #282830;
-            --bg-input: #31313c;
-            --text-main: #ffffff;
-            --text-muted: #9e9eb1;
-            --border-color: #424254;
-            --accent-blue: #5383e8; /* Le bleu plat et sobre de OP.GG */
-        }
+/* =========================================
+   1. VARIABLES & RESET GLOBAL
+   ========================================= */
+:root {
+    --bg-main: #1c1c1f;
+    --bg-card: #282830;
+    --bg-input: #31313c;
+    --text-main: #ffffff;
+    --text-muted: #9e9eb1;
+    --border-color: #424254;
+    --accent-blue: #5383e8; 
+}
 
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            background-color: var(--bg-main); 
-            color: var(--text-main); 
-            margin: 0; 
-            padding: 50px 20px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-        }
+body { 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+    background-color: var(--bg-main); 
+    color: var(--text-main); 
+    margin: 0; 
+    padding: 50px 20px; 
+    padding-top: 60px !important; /* Laisse de la place pour la bannière */
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+}
 
-        /* Titre */
-        .logo-container {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .logo-container h1 {
-            font-size: 48px;
-            font-weight: 800;
-            margin: 0;
-            letter-spacing: -1px;
-        }
-        .logo-container span { color: var(--accent-blue); }
+/* =========================================
+   2. BANNIÈRE SUPÉRIEURE (JEUX)
+   ========================================= */
+.game-banner {
+    position: fixed; 
+    top: 0; left: 0; width: 100%; height: 35px; 
+    display: flex; z-index: 1000;
+    background-color: var(--bg-main);
+    border-bottom: 1px solid var(--border-color);
+}
 
-        /* Barre de recherche style OP.GG */
-        .search-wrapper {
-            display: flex;
-            align-items: center;
-            background-color: var(--bg-input);
-            border-radius: 30px;
-            padding: 6px 6px 6px 20px;
-            width: 100%;
-            max-width: 650px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-        .region-select {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            font-size: 14px;
-            outline: none;
-            cursor: pointer;
-        }
-        .divider {
-            width: 1px;
-            height: 20px;
-            background-color: var(--border-color);
-            margin: 0 15px;
-        }
-        .search-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: var(--text-main);
-            font-size: 15px;
-            outline: none;
-        }
-        .search-input::placeholder { color: var(--text-muted); }
-        .search-btn {
-            background-color: var(--accent-blue);
-            color: white;
-            border: none;
-            border-radius: 24px;
-            padding: 10px 24px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .search-btn:hover { background-color: #4671c6; }
+.game-item {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden;
+}
 
-        /* Encadré Principal : Quick Training */
-        .quick-train-box {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            width: 100%;
-            max-width: 500px; /* Plus petit que la barre de recherche */
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-bottom: 40px;
-        }
-        .quick-train-box:hover {
-            border-color: var(--accent-blue);
-            background-color: #2e2e38;
-        }
-        .quick-train-box h2 { margin: 0 0 5px 0; font-size: 20px; }
-        .quick-train-box p { margin: 0; color: var(--text-muted); font-size: 14px; }
+.game-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--text-muted); transition: all 0.3s ease; z-index: 2;
+}
 
-        /* Les 3 encadrés grisés (Fonctionnalités futures) */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            width: 100%;
-            max-width: 650px;
-        }
-        .feature-card {
-            background-color: var(--bg-main);
-            border: 1px dashed var(--border-color);
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-            opacity: 0.5;
-            cursor: not-allowed;
-            user-select: none;
-        }
-        .feature-card h3 { margin: 0 0 5px 0; font-size: 14px; color: var(--text-muted); }
-        .feature-card p { margin: 0; font-size: 12px; color: #666675; }
+/* Styles de base et découpe en diagonale */
+.lol { background-color: #232328; clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%); margin-right: -2%; }
+.tft { background-color: #1c1c21; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); margin-right: -2%; }
+.valorant { background-color: #17171c; clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%); }
 
-        /* --- TABLEAU DE BORD DE RÉSULTAT (Sobre) --- */
-        #workout-board {
-            display: none;
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 30px;
-            width: 100%;
-            max-width: 600px;
-            text-align: center;
-            margin-top: 20px;
-        }
-        
-        .language-switcher {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 100;
-        }
+/* Animations au survol */
+.game-item:hover { flex: 1.2; z-index: 10; }
+.game-item:hover .game-label { color: var(--bg-main); transform: scale(1.1); }
+.game-item.lol:hover { background-color: #fbc531; }
+.game-item.tft:hover { background-color: #5383e8; }
+.game-item.valorant:hover { background-color: #ff4655; }
 
-        #lang-select {
-            background-color: var(--bg-input);
-            color: var(--text-muted);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 5px 8px;
-            font-size: 12px;
-            cursor: pointer;
-            outline: none;
-            transition: all 0.2s;
-        }
+/* =========================================
+   3. TITRE & CHANGEMENT DE LANGUE
+   ========================================= */
+.language-switcher { position: absolute; top: 50px; right: 20px; z-index: 100; }
+#lang-select {
+    background-color: var(--bg-input); color: var(--text-muted);
+    border: 1px solid var(--border-color); border-radius: 4px; padding: 5px 8px; cursor: pointer;
+}
+#lang-select:hover { border-color: var(--accent-blue); color: var(--text-main); }
 
-        #lang-select:hover {
-            border-color: var(--accent-blue);
-            color: var(--text-main);
-        }
-        #game-status { font-size: 32px; font-weight: 800; margin-bottom: 5px; }
-        .status-win { color: var(--accent-blue); }
-        .status-loss { color: #e84057; /* Rouge OP.GG */ }
-        .stats-kda { color: var(--text-muted); margin-bottom: 25px; }
-        
-        .exercise-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-        .exercise-item { background: var(--bg-input); padding: 20px; border-radius: 8px; }
-        .ex-num { font-size: 32px; font-weight: bold; color: var(--text-main); }
-        .ex-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; margin-top: 5px; }
-        
-        #loading { display: none; color: var(--text-muted); margin-top: 20px; }
+.logo-container { text-align: center; margin-bottom: 40px; }
+.logo-container h1 { font-size: 48px; font-weight: 800; margin: 0; letter-spacing: -1px; }
+.logo-container span { color: var(--accent-blue); transition: color 0.3s; }
+
+.game-subtitle {
+    margin-top: 5px; font-size: 14px; font-weight: 500; color: var(--text-muted);
+    letter-spacing: 1px; text-transform: uppercase; transition: all 0.3s ease;
+}
+
+/* Thèmes dynamiques gérés par le JS */
+.color-lol { color: #fbc531 !important; }      
+.color-tft { color: #5383e8 !important; }      
+.color-valorant { color: #ff4655 !important; } 
+
+/* =========================================
+   4. BARRE DE RECHERCHE & BOUTON
+   ========================================= */
+.search-wrapper {
+    display: flex; align-items: center; background-color: var(--bg-input);
+    border-radius: 30px; padding: 6px 6px 6px 20px; width: 100%; max-width: 650px; margin-bottom: 20px;
+}
+.region-select { background: transparent; border: none; color: var(--text-muted); cursor: pointer; outline: none; }
+.divider { width: 1px; height: 20px; background-color: var(--border-color); margin: 0 15px; }
+.search-input { flex: 1; background: transparent; border: none; color: var(--text-main); font-size: 15px; outline: none; }
+
+.quick-train-box {
+    background-color: var(--bg-card); border: 1px solid var(--border-color);
+    border-radius: 12px; width: 100%; max-width: 500px; padding: 20px; text-align: center;
+    cursor: pointer; transition: all 0.2s; margin-bottom: 40px;
+}
+.quick-train-box:hover:not(.disabled-box) { border-color: var(--accent-blue); background-color: #2e2e38; }
+
+.disabled-box { opacity: 0.4; cursor: not-allowed; pointer-events: none; background-color: var(--bg-main); }
+
+/* =========================================
+   5. TABLEAU DE BORD (WORKOUT)
+   ========================================= */
+#workout-board {
+    display: none; background-color: var(--bg-card); border: 1px solid var(--border-color);
+    border-radius: 12px; padding: 30px; width: 100%; max-width: 600px; text-align: center;
+    position: relative; overflow: hidden; --champ-bg: none; 
+}
+#workout-board::before {
+    content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-image: var(--champ-bg); background-size: cover; background-position: center 25%;
+    opacity: 0.15; z-index: 0; pointer-events: none; transition: background-image 0.5s ease;
+}
+#workout-board > * { position: relative; z-index: 1; }
+
+#game-status { font-size: 32px; font-weight: 800; margin-bottom: 5px; }
+.status-win { color: var(--accent-blue); }
+.status-loss { color: #e84057; }
+.stats-kda { color: var(--text-muted); margin-bottom: 25px; }
+
+.exercise-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+.exercise-item { background: rgba(49, 49, 60, 0.75); padding: 20px; border-radius: 8px; backdrop-filter: blur(2px); }
+.ex-num { font-size: 32px; font-weight: bold; color: var(--text-main); }
+.ex-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; margin-top: 5px; }
+
+#loading { display: none; color: var(--text-muted); margin-bottom: 20px; }
+
+/* =========================================
+   6. FONCTIONNALITÉS FUTURES
+   ========================================= */
+.features-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 100%; max-width: 650px;
+    margin-top: 20px; /* Remplacera l'ancienne balise </br> */
+}
+.feature-card {
+    background-color: var(--bg-main); border: 1px dashed var(--border-color);
+    border-radius: 8px; padding: 15px; text-align: center; opacity: 0.5; cursor: not-allowed; user-select: none;
+}
+
+/* =========================================
+   7. RESPONSIVE DESIGN (MOBILES)
+   ========================================= */
+@media (max-width: 768px) {
+    .language-switcher { top: 45px; right: 10px; }
+    .logo-container { margin-top: 20px; }
+    .logo-container h1 { font-size: 36px; }
+    .exercise-grid, .features-grid { grid-template-columns: 1fr; gap: 10px; }
+    .game-label { font-size: 9px; letter-spacing: 0; }
+    .search-wrapper { flex-direction: column; border-radius: 16px; padding: 10px; gap: 8px; }
+    .divider { width: 100%; height: 1px; margin: 5px 0; }
+    .search-input { width: 100%; text-align: center; }
+}

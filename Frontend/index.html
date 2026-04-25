@@ -2,12 +2,19 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RiftFit</title>
     <link href="style.css" rel="stylesheet" />
-
 </head>
 <body>
-    <script src="app.js"></script>
+
+    <header>
+        <nav class="game-banner">
+            <div class="game-item lol"><span class="game-label">League of Legends</span></div>
+            <div class="game-item tft"><span class="game-label">TFT</span></div>
+            <div class="game-item valorant"><span class="game-label">Valorant</span></div>
+        </nav>
+    </header>
 
     <div class="language-switcher">
         <select id="lang-select" onchange="changeLanguage(this.value)">
@@ -17,12 +24,12 @@
         </select>
     </div>
 
-
     <div class="logo-container">
-        <h1>RIFT<span>FIT</span></h1>
+        <h1>RIFT<span id="fit-text">FIT</span></h1>
+        <p id="game-quote" class="game-subtitle">Where legends are born</p>
     </div>
 
-<div class="search-wrapper">
+    <div class="search-wrapper">
         <select id="region" class="region-select">
             <option value="europe">Europe</option>
             <option value="americas">Americas</option>
@@ -30,29 +37,13 @@
         </select>
         <div class="divider"></div>
         <input type="text" id="riotId" class="search-input" data-i18n="placeholder" placeholder="Game Name#Tag (ex: Faker#KR1)">
-        <button class="search-btn" onclick="generateWorkout()">.FIT</button>
     </div>
 
-    <div class="quick-train-box" onclick="generateWorkout()">
+    <div id="quick-train-btn" class="quick-train-box disabled-box" onclick="generateWorkout()">
         <h2 data-i18n="quickTrainTitle">Quick Training</h2>
         <p data-i18n="quickTrainDesc">Générer un entraînement basé sur le dernier match</p>
     </div>
-
-    <div class="features-grid">
-        <div class="feature-card">
-            <h3 data-i18n="featCollateral">Collateral</h3>
-            <p data-i18n="featCollateralDesc">Link multiple fitness goals</p>
-        </div>
-        <div class="feature-card">
-            <h3>Based on your weakness</h3>
-            <p>Target your worst stats</p>
-        </div>
-        <div class="feature-card">
-            <h3>Complete Workout</h3>
-            <p>Full-body routine</p>
-        </div>
-    </div>
-
+    
     <div id="loading" data-i18n="loading">Analyse des données Riot en cours...</div>
 
     <div id="workout-board">
@@ -75,5 +66,22 @@
             </div>
         </div>
     </div>
+    
+    <div class="features-grid">
+        <div class="feature-card">
+            <h3 data-i18n="featCollateral">Collateral</h3>
+            <p data-i18n="featCollateralDesc">Link multiple fitness goals</p>
+        </div>
+        <div class="feature-card">
+            <h3>Based on your weakness</h3>
+            <p>Target your worst stats</p>
+        </div>
+        <div class="feature-card">
+            <h3>Complete Workout</h3>
+            <p>Full-body routine</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
 </body>
 </html>
