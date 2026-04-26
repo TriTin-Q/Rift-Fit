@@ -44,6 +44,28 @@ body {
     letter-spacing: 1px; color: var(--text-muted); transition: all 0.3s ease; z-index: 2;
 }
 
+/*Message de précision de facteur*/
+.workout-formula {
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.workout-formula strong {
+    color: var(--accent-blue);
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.info-icon {
+    font-style: normal;
+    margin-right: 5px;
+    opacity: 0.7;
+}
+
 /* Styles de base et découpe en diagonale */
 .lol { background-color: #232328; clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%); margin-right: -2%; }
 .tft { background-color: #1c1c21; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%); margin-right: -2%; }

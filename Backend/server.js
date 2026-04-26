@@ -162,7 +162,9 @@ app.get('/api/tft-match/:region/:name/:tag', async (req, res) => {
             level: participant.level,
             players_eliminated: participant.players_eliminated,
             traits_active: participant.traits.filter(t => t.style > 0).length, // Seulement les traits activés (Bronze+)
-            gold_left: participant.gold_left
+            gold_left: participant.gold_left,
+            last_round: participant.last_round,
+            companion: participant.companion 
         });
 
     } catch (error) {
@@ -170,4 +172,74 @@ app.get('/api/tft-match/:region/:name/:tag', async (req, res) => {
     }
 });
 
+// Route pour récupérer le dernier match Valorant
+// app.get('/api/val-match/:region/:gameName/:tagLine', async (req, res) => {
+//     const { region, gameName, tagLine } = req.params;
+//     const apiKey = process.env.RIOT_API_KEY;
+
+//     // On convertit la région "compte" en shard "Valorant"
+//     const valRegionMapping = {
+//         'europe': 'eu',
+//         'americas': 'na',
+//         'asia': 'ap',
+//         'esports': 'esports'
+//     };
+    
+//     // Le shard pour les matchs (eu, na, etc.)
+//     const shard = valRegionMapping[region] || region; 
+//     // La zone pour le PUUID (europe, americas, etc.)
+//     const accountRegion = region;
+
+//     try {
+//         // 1. Récupérer le PUUID (Même endpoint que LoL/TFT)
+//         const accountUrl = `https://${accountRegion}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}?api_key=${apiKey}`;        const accountRes = await fetch(accountUrl);
+//         const accountResult = await fetch(accountUrl);
+//         const accountData = await accountResult.json();        
+//         if (!accountData.puuid) return res.status(404).json({ error: "Joueur introuvable" });
+//         const puuid = accountData.puuid;
+
+//         // 2. Récupérer la liste des matchs (Endpoint VAL-MATCH-V1)
+//         // Attention : La région ici est 'eu', 'na', etc.
+//         const matchListUrl = `https://${shard}.api.riotgames.com/val/match/v1/matchlists/by-puuid/${puuid}?api_key=${apiKey}`;
+//         const matchListRes = await fetch(matchListUrl);
+//         const matchListData = await matchListRes.json();
+//         console.log('QQ 1 : ' + JSON.stringify(matchListUrl));
+//         console.log('QQ 2 : ' + JSON.stringify(matchListRes));
+//         console.log('QQ 3 : ' + JSON.stringify(matchListData));
+
+//         if (!matchListData.history || matchListData.history.length === 0) {
+//             return res.status(404).json({ error: "Aucun match trouvé" });
+//         }
+
+//         const lastMatchId = matchListData.history[0].matchId;
+
+//         // 3. Récupérer les détails du match
+//         const matchUrl = `https://${region}.api.riotgames.com/val/match/v1/matches/${lastMatchId}?api_key=${apiKey}`;
+//         const matchRes = await fetch(matchUrl);
+//         const matchData = await matchRes.json();
+
+//         // 4. Extraire les stats du joueur
+//         const player = matchData.players.find(p => p.puuid === puuid);
+//         const teamId = player.teamId;
+//         const teamStats = matchData.teams.find(t => t.teamId === teamId);
+        
+//         // Victoire si ton équipe a gagné
+//         const victory = teamStats.won; 
+
+//         res.json({
+//             kills: player.stats.kills,
+//             morts: player.stats.deaths,
+//             assists: player.stats.assists,
+//             score: player.stats.score,
+//             agentId: player.characterId, // Utile pour l'image
+//             agentName: await getAgentName(player.characterId), // Optionnel si tu as une fonction de mapping
+//             map: matchData.matchInfo.mapId,
+//             victoire: victory
+//         });
+
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ error: "Erreur lors de la récupération du match Valorant" });
+//     }
+// });
 app.listen(3000, () => console.log('✅ Serveur Backend lancé sur http://localhost:3000'));
