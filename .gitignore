@@ -1,0 +1,20 @@
+# Sécurité : TON SECRET LE PLUS PRÉCIEUX
+.env
+
+# Dépendances : Trop lourd pour Git (on les réinstalle avec npm install)
+node_modules/
+
+# Logs : Les fichiers de debug inutiles
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# OS : Les fichiers système invisibles (Mac/Windows)
+.DS_Store
+Thumbs.db
+
+# Build : Si tu utilises un outil comme Vite ou Webpack plus tard
+dist/
+build/
