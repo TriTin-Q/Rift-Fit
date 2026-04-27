@@ -10,7 +10,7 @@ app.use(cors());
 // On ajoute :region dans l'URL de notre API
 app.get('/api/player/:region/:gameName/:tagLine', async (req, res) => {
     const { region, gameName, tagLine } = req.params;
-    const apiKey = process.env.RIOT_API_KEY;
+    const apiKey = process.env.RIOT_LOL_API_KEY;
 
     try {
         // On remplace "europe" en dur par la variable ${region}
@@ -31,7 +31,7 @@ app.get('/api/player/:region/:gameName/:tagLine', async (req, res) => {
 // Nouvelle route : Enchaînement automatique ET filtrage des données du match
 app.get('/api/last-match/:region/:gameName/:tagLine', async (req, res) => {
     const { region, gameName, tagLine } = req.params;
-    const apiKey = process.env.RIOT_API_KEY;
+    const apiKey = process.env.RIOT_LOL_API_KEY;
     const headers = { 'X-Riot-Token': apiKey };
 
     try {
@@ -133,7 +133,7 @@ app.get('/api/last-match/:region/:gameName/:tagLine', async (req, res) => {
 // Nouvelle route pour le dernier match TFT
 app.get('/api/tft-match/:region/:name/:tag', async (req, res) => {
     const { region, name, tag } = req.params;
-    const apiKey = process.env.RIOT_API_KEY;
+    const apiKey = process.env.RIOT_TFT_API_KEY;
     
     // Mapping des régions pour TFT (Americas, Asia, Europe)
     const routingValue = region === 'europe' ? 'europe' : (region === 'asia' ? 'asia' : 'americas');

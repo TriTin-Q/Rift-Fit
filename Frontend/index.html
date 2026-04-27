@@ -12,7 +12,7 @@
         <nav class="game-banner">
             <div class="game-item lol"><span class="game-label">League of Legends</span></div>
             <div class="game-item tft"><span class="game-label">TFT</span></div>
-            <div class="game-item valorant"><span class="game-label">Valorant</span></div>
+            <!-- <div class="game-item valorant"><span class="game-label">Valorant</span></div> -->
         </nav>
     </header>
 
@@ -45,6 +45,7 @@
         
         <div class="divider"></div>
         <input type="text" id="riotId" class="search-input" data-i18n="placeholder" placeholder="Game Name#Tag (ex: Faker#KR1)">
+        
     </div>
 
     <div id="quick-train-btn" class="quick-train-box disabled-box" onclick="generateWorkout()">
@@ -98,6 +99,99 @@
         </div>
     </div>
 
+    <section id="about-anchor" class="about-section">
+        <div class="about-container">
+            <div class="about-icon">
+                <img src="../Assets/questionMark.png" alt="LoL Icon">
+            </div>
+            <div class="about-text" onclick="openOnboarding()" >
+                <h3 data-i18n="aboutTitle">What's RiftFit?</h3>
+                <p data-i18n="aboutShortDesc">Transforme tes stats Riot Games en programme sportif personnalisé.</p>
+            </div>
+             <div class="about-icon">
+                <img src="../Assets/Does_Not_Compute_Emote.png" alt="LoL Icon">
+            </div>
+        </div>
+    </section>
+
+    <div id="onboarding-modal" class="modal">
+    <div class="modal-content onboarding-glass">
+        <span class="close" onclick="closeOnboarding()">&times;</span>
+        
+        <div class="onboarding-header">
+            <img src="../Assets/professor.png" alt="Logo" class="header-icon">
+            <h2 data-i18n="onboardingTitle">RiftFit : Game Hard, Train Harder</h2>
+        </div>
+
+        <div class="onboarding-body">
+            <section class="info-block">
+                <h3 data-i18n="conceptTitle">Le Concept</h3>
+                <p data-i18n="conceptDesc">RiftFit transforme ta frustration ou ton euphorie de fin de game en énergie physique. On récupère tes stats (KDA, placement) et on les convertit en exercices. Plus tu joues (ou plus tu perds...), plus tu deviens fort.</p>
+            </section>
+
+        <section class="roadmap-details">
+            <h3 data-i18n="futureTitle">🚀 Leveling Up (Prochainement)</h3>
+
+            <div class="roadmap-card">
+                <div class="card-visual">
+                    <img src="../Assets/collateral_picture-removebg-preview.png" alt="Collateral Mode">
+                </div>
+                <div class="card-text">
+                    <h4 data-i18n="roadCollateral">Mode Collateral</h4>
+                    <p data-i18n="roadCollateralDesc">Parce qu'on ne regarde pas son partenaire jouer sans rien faire. Si l'un joue, l'autre participe physiquement ! Le sport devient un duo pour doubler la motivation (et les résultats).</p>
+                </div>
+            </div>
+
+            <hr class="roadmap-divider">
+
+            <div class="roadmap-card">
+                <div class="card-visual">
+                    <img src="../Assets/Weakness_Icon-removebg-preview.png" alt="Weakness Mode">
+                </div>
+                <div class="card-text">
+                    <h4 data-i18n="roadWeakness">Based on your weakness</h4>
+                    <p data-i18n="roadWeaknessDesc">Le KDA ne dit pas tout. Tu es mort à cause d'un manque de vision ? Fais des exercices pour t'en souvenir. Un entraînement basé sur tes vraies failles (CS/min, Ward score, Objectifs) pour progresser en jeu et en vrai.</p>
+                </div>
+            </div>
+
+            <hr class="roadmap-divider">
+
+            <div class="roadmap-card">
+                <div class="card-visual">
+                    <img src="../Assets/Hype_Kitty_Emote.png" alt="Complete Workout">
+                </div>
+                <div class="card-text">
+                    <h4 data-i18n="roadComplete">Complete Workout</h4>
+                    <p data-i18n="roadCompleteDesc">Pour les guerriers qui ne veulent pas juste quelques pompes. Un programme full-body structuré qui s'adapte à la durée de ta session de jeu pour une vraie transformation physique.</p>
+                </div>
+            </div>
+        </section>
+        </div>
+
+        <button class="cta-btn" onclick="closeOnboarding()" data-i18n="onboardingCloseBtn">C'est compris, je suis prêt !</button>
+    </div>
+</div>
+
+    <div id="legal-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLegal()">&times;</span>
+            <div id="legal-text"></div>
+        </div>
+    </div>
     <script src="app.js"></script>
 </body>
+<footer class="main-footer">
+    <div class="footer-content">
+        <p class="riot-disclaimer" data-i18n="riotDisclaimer">
+            </p>
+
+        <div class="footer-bottom">
+            <p data-i18n="footerCopyright">© 2026 RiftFit. Tous droits réservés.</p>
+            <div class="footer-links">
+                <a href="#" data-i18n="linkLegal" onclick="showLegal('mentions')">Mentions Légales</a>
+                <a href="#" data-i18n="linkPrivacy" onclick="showLegal('privacy')">Confidentialité</a>
+            </div>
+        </div>
+    </div>
+</footer>
 </html>

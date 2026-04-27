@@ -118,6 +118,7 @@ body {
     border-radius: 12px; width: 100%; max-width: 500px; padding: 20px; text-align: center;
     cursor: pointer; transition: all 0.2s; margin-bottom: 40px;
 }
+
 .quick-train-box:hover:not(.disabled-box) { border-color: var(--accent-blue); background-color: #2e2e38; }
 
 .disabled-box { opacity: 0.4; cursor: not-allowed; pointer-events: none; background-color: var(--bg-main); }
@@ -159,6 +160,339 @@ body {
 .feature-card {
     background-color: var(--bg-main); border: 1px dashed var(--border-color);
     border-radius: 8px; padding: 15px; text-align: center; opacity: 0.5; cursor: not-allowed; user-select: none;
+}
+
+.main-footer {
+    margin-top: 50px;
+    padding: 20px 20px;
+    /* background: rgba(10, 10, 15, 0.9); */
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: #dfdddd;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.footer-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.riot-disclaimer {
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.footer-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 5px;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.footer-links a {
+    color: var(--accent-blue); /* Ta couleur principale */
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+.modal {
+    display: none;
+
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.8);
+
+    /* AJOUT : Centrage parfait avec Flexbox */
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #1a1a2e;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid var(--accent-blue);
+    width: 80%;
+    max-width: 600px;
+    color: white;
+    border-radius: 10px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+/* La section d'ancrage en bas */
+.about-section {
+    width: 100%;
+    max-width: 800px; /* Aligné sur ta barre de recherche */
+    margin: 40px auto;
+    background: rgba(30, 30, 45, 0.6); /* Un peu plus sombre */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 25px;
+    box-sizing: border-box; /* Pour que le padding ne dépasse pas des 800px */
+
+    background-color: var(--bg-card); 
+    border-radius: 12px;
+    cursor: pointer; 
+    transition: all 0.2s; 
+    margin-bottom: 40px;
+}
+
+.about-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Espace entre l'icon/texte et le bouton */
+    gap: 20px;
+    text-align: left;
+}
+
+.about-icon {
+    position: relative;
+    flex-shrink: 0; /* L'icône ne doit pas s'écraser */
+    width: 60px;
+    height: 60px;
+}
+
+.about-icon img {
+    width: 120%;
+    height: auto;
+}
+.about-text {
+    flex-grow: 1; /* Le texte prend toute la place restante */
+    text-align: center;
+
+}
+
+.about-text h3 {
+    margin: 0 0 5px 0;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.about-text p {
+    margin: 0;
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+/* Le bouton "En savoir plus" version stylée */
+.read-more {
+    background: transparent;
+    border: 1px solid var(--accent-blue);
+    color: var(--accent-blue);
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: 0.3s;
+}
+
+.read-more:hover {
+    background: var(--accent-blue);
+    color: white;
+}
+
+.about-icon .q-mark {
+    position: absolute;
+    top: -5px; right: -5px;
+    background: var(--accent-blue);
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    display: flex; align-items: center; justify-content: center;
+}
+
+/* Les mini boutons sur les cartes */
+.game-card { position: relative; } /* Important pour le positionnement du ? */
+
+.mini-info {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-size: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+    z-index: 10;
+}
+
+.mini-info:hover {
+    background: var(--accent-blue);
+    transform: scale(1.2);
+}
+
+.about-section:hover:not(.disabled-box) { border-color: var(--accent-blue); background-color: #2e2e38; }
+
+.onboarding-glass {
+    background: rgba(10, 10, 20, 0.9) !important;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(0, 191, 255, 0.3) !important;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    max-width: 650px !important;
+    padding: 40px !important;
+    text-align: center;
+    width: 90%; /* Laisse 5% de vide de chaque côté sur mobile */
+
+    max-height: 80vh; /* Maximum 85% de la hauteur de l'écran */
+    overflow-y: auto; /* Active le scroll si le contenu dépasse */
+
+    position: relative;
+    padding: 40px;
+    border-radius: 15px;
+    padding: 30px; /* Un peu moins de padding sur mobile pour gagner de la place */
+    margin-top: 100px;
+    box-sizing: border-box;
+}
+
+.onboarding-glass::-webkit-scrollbar {
+    width: 6px;
+}
+
+.onboarding-glass::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.onboarding-glass::-webkit-scrollbar-thumb {
+    background: var(--accent-blue); /* Ta couleur bleue */
+    border-radius: 10px;
+}
+
+.onboarding-header {
+    margin-bottom: 30px;
+}
+
+.header-icon {
+    width: 120px;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 0 10px rgba(0, 191, 255, 0.5));
+}
+
+.info-block {
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 20px;
+}
+
+.roadmap-block {
+    text-align: left;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.roadmap-list {
+    list-style: none;
+    padding: 0;
+}
+
+.roadmap-list li {
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.roadmap-list li strong {
+    color: var(--accent-blue);
+    display: block;
+    margin-bottom: 3px;
+}
+
+.cta-btn {
+    margin-top: 30px;
+    background: linear-gradient(90deg, #00c8ff, #0072ff);
+    color: white;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.cta-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 200, 255, 0.4);
+}
+
+
+.roadmap-details {
+    text-align: left;
+    margin-top: 30px;
+}
+
+.roadmap-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 15px 0;
+}
+
+.card-visual {
+    flex: 0 0 100px; /* Taille fixe pour l'image */
+    height: 80px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-visual img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.card-text h4 {
+    margin: 0 0 8px 0;
+    color: var(--accent-blue);
+    font-size: 1.1rem;
+}
+
+.card-text p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #ccc;
+    line-height: 1.4;
+}
+
+.roadmap-divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    margin: 10px 0;
+}
+
+/* Version Mobile : on empile les éléments */
+@media (max-width: 600px) {
+    .roadmap-card {
+        flex-direction: column;
+        text-align: center;
+    }
 }
 
 /* =========================================

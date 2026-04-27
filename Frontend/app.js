@@ -353,3 +353,71 @@ function showWorkoutBoard(squats, pompes, abdos, gameType = 'lol') {
 
     document.getElementById('workout-board').style.display = 'block';
 }
+
+// --- GESTION DES MODAUX ---
+
+function openOnboarding() {
+    document.getElementById('onboarding-modal').style.display = 'flex';
+}
+
+function closeOnboarding() {
+    const modal = document.getElementById('onboarding-modal');
+    const anchor = document.getElementById('about-anchor');
+    
+    // Si l'ancre existe, on fait la jolie animation
+    if (anchor) {
+        const rect = anchor.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        modal.style.transition = "all 0.6s cubic-bezier(0.6, -0.28, 0.735, 0.045)";
+        modal.style.transform = `translate(${centerX - window.innerWidth/2}px, ${centerY - window.innerHeight/2}px) scale(0.1)`;
+        modal.style.opacity = "0";
+
+        setTimeout(() => {
+            modal.style.display = 'none';
+            modal.style.transform = "none";
+            modal.style.opacity = "1";
+        }, 600);
+    } else {
+        // Sinon fermeture sèche
+        modal.style.display = 'none';
+    }
+
+    localStorage.setItem('hasSeenOnboarding', 'true');
+}
+
+function showLegal(type) {
+    const modal = document.getElementById('legal-modal');
+    const textZone = document.getElementById('legal-text');
+    
+    if (type === 'mentions') {
+        textZone.innerHTML = `
+            <h2>Legal Notices</h2>
+            <p><strong>Éditeur :</strong> QUACH Tri Tin</p>
+            <p><strong>Contact :</strong> ttquachpro@outlook.com</p>
+            <p><strong>Hébergement :</strong> Hetzner Online GmbH...</p>
+            <p>This site is a personal project created for portfolio purposes.</p>
+        `;
+    } else {
+        textZone.innerHTML = `
+            <h2>Privacy Policy</h2>
+            <p>RiftFit does not store any personal data...</p>
+        `;
+    }
+    modal.style.display = 'flex'; // Activé uniquement au clic
+}
+
+function closeLegal() {
+    document.getElementById('legal-modal').style.display = "none";
+}
+
+// --- INITIALISATION AU CHARGEMENT ---
+window.onload = function() {
+    const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
+    if (!hasSeenOnboarding) {
+        openOnboarding();
+    }
+    // On s'assure que le legal-modal est bien caché au cas où le CSS bugge
+    document.getElementById('legal-modal').style.display = "none";
+};
