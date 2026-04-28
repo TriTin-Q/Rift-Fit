@@ -109,7 +109,19 @@
     </main>
 
 <aside id="modals">
-        
+        <div id="coming-soon-modal" class="modal">
+            <div class="modal-content onboarding-glass" style="text-align: center;">
+                <span class="close" onclick="closeComingSoon()">&times;</span>
+                <header class="onboarding-header">
+                    <img src="../Assets/How_Could_You_Emote.png" alt="Coming Soon" class="header-icon" style="width: 80px;">
+                    <h2 data-i18n="comingSoonTitle" style="color: var(--accent-blue);">Désolé !</h2>
+                </header>
+                <div class="onboarding-body">
+                    <p data-i18n="comingSoonDesc" style="font-size: 1.2rem; margin: 20px 0;">Ce n'est pas encore dispo, mais bientôt !</p>
+                </div>
+                <button class="cta-btn" onclick="closeComingSoon()" data-i18n="onboardingCloseBtn">OK !</button>
+            </div>
+        </div>
         <div id="onboarding-modal" class="modal">
             <div class="modal-content onboarding-glass">
                 <span class="close" onclick="closeOnboarding()">&times;</span>

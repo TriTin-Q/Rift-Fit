@@ -107,7 +107,11 @@ body {
    ========================================================================== */
 .logo-container { text-align: center; margin: 40px 0; }
 .logo-container h1 { font-size: 48px; font-weight: 800; margin: 0; letter-spacing: -1px; }
-#fit-text { color: var(--accent-blue); }
+#fit-text {  transition: color 0.3s ease;}
+
+.color-lol { color: #fbc531 !important; }      
+.color-tft { color: #5383e8 !important; }      
+.color-valorant { color: #ff4655 !important; }
 
 .game-subtitle {
     margin-top: 5px; 

@@ -52,7 +52,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- 3. Event Listeners ---
     // Game selection banner
     document.querySelector('.lol')?.addEventListener('click', () => setTheme('lol'));
-    document.querySelector('.tft')?.addEventListener('click', () => setTheme('tft'));
+    // document.querySelector('.tft')?.addEventListener('click', () => setTheme('tft'));
+    // Remplace la ligne du clic TFT par celle-ci :
+document.querySelector('.tft')?.addEventListener('click', () => {
+    openComingSoon();
+    setTheme('tft'); // On garde le changement de couleur en fond, c'est plus joli
+});
+
 
     // Difficulty change
     document.getElementById('difficulty').onchange = (e) => {
@@ -87,11 +93,12 @@ async function generateWorkout(mode = 'solo') {
     document.getElementById('workout-board').style.display = 'none';
 
     try {
-        if (currentGame === 'lol') {
-            await generateLoLWorkout(userDiff, fullRiotId, mode);
-        } else if (currentGame === 'tft') {
-            await generateTFTWorkout(userDiff, fullRiotId, mode);
-        }
+        await generateLoLWorkout(userDiff, fullRiotId, mode);
+        // if (currentGame === 'lol') {
+        //     await generateLoLWorkout(userDiff, fullRiotId, mode);
+        // } else if (currentGame === 'tft') {
+        //     await generateTFTWorkout(userDiff, fullRiotId, mode);
+        // }
     } catch (error) {
         document.getElementById('loading').style.display = 'none';
         alert("Error fetching data: " + error.message);
@@ -360,3 +367,12 @@ function showLegal(type) {
 
 function closeLegal() { document.getElementById('legal-modal').style.display = "none"; }
 
+
+function openComingSoon() {
+    document.getElementById('coming-soon-modal').style.display = 'flex';
+    updateLanguage(); 
+}
+
+function closeComingSoon() {
+    document.getElementById('coming-soon-modal').style.display = 'none';
+}
