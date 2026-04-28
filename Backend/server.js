@@ -1,10 +1,48 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
-app.use(cors());
 
+// --- 1. CONFIGURATION DU CORS ---
+// On crée une liste des origines autorisées (Ton site local + Ton futur site en ligne)
+const allowedOrigins = [
+    'http://127.0.0.1:5500', 
+    'http://localhost:5500', 
+    'https://ton-site-riftfit.fr'
+];
+
+app.use(cors({
+    origin: function (origin, callback) {
+        // Permet les requêtes sans origine (comme Postman) ou celles dans notre liste
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('CORS non autorisé pour cette origine'));
+        }
+    },
+    optionsSuccessStatus: 200
+}));
+
+// --- 2. CONFIGURATION DU RATE LIMIT ---
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, 
+    max: 100, // Augmente à 100 pour tes tests, redescends à 20-30 en production
+    message: "Trop de tentatives, réessayez plus tard."
+});
+app.use('/api/', limiter);
+
+// --- 3. TES ROUTES (Exemple) ---
+app.get('/api/test', (req, res) => {
+    res.json({ message: "Serveur RiftFit opérationnel !" });
+});
+
+// N'oublie pas de lancer le serveur !
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`✅ Serveur lancé sur http://localhost:${PORT}`);
+});
 
 // Route pour récupérer le compte d'un joueur
 // On ajoute :region dans l'URL de notre API
@@ -242,4 +280,4 @@ app.get('/api/tft-match/:region/:name/:tag', async (req, res) => {
 //         res.status(500).json({ error: "Erreur lors de la récupération du match Valorant" });
 //     }
 // });
-app.listen(3000, () => console.log('✅ Serveur Backend lancé sur http://localhost:3000'));
+// app.listen(3000, () => console.log('✅ Serveur Backend lancé sur http://localhost:3000'));

@@ -3,195 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RiftFit</title>
+    <title>RiftFit | Game Hard, Train Harder</title>
+
     <link href="style.css" rel="stylesheet" />
 </head>
 <body>
 
-    <header>
+    <header class="main-header">
         <nav class="game-banner">
             <div class="game-item lol"><span class="game-label">League of Legends</span></div>
             <div class="game-item tft"><span class="game-label">TFT</span></div>
-            <!-- <div class="game-item valorant"><span class="game-label">Valorant</span></div> -->
         </nav>
+
+        <div class="language-switcher">
+            <select id="lang-select" onchange="changeLanguage(this.value)">
+                <option value="fr">FR</option>
+                <option value="en">EN</option>
+                <option value="es">ES</option>
+            </select>
+        </div>
     </header>
 
-    <div class="language-switcher">
-        <select id="lang-select" onchange="changeLanguage(this.value)">
-            <option value="fr">FR</option>
-            <option value="en">EN</option>
-            <option value="es">ES</option>
-        </select>
-    </div>
-
-    <div class="logo-container">
-        <h1>RIFT<span id="fit-text">FIT</span></h1>
-        <p id="game-quote" class="game-subtitle">Where legends are born</p>
-    </div>
-
-    <div class="search-wrapper">
-        <select id="region" class="region-select">
-            <option value="europe">Europe</option>
-            <option value="americas">Americas</option>
-            <option value="asia">Asia</option>
-        </select>
-        <div class="divider"></div>
-
-        <select id="difficulty" class="region-select">
-            <option value="iron" data-i18n="diffIron">Iron (Débutant)</option>
-            <option value="gold" data-i18n="diffGold">Gold (Intermédiaire)</option>
-            <option value="challenger" data-i18n="diffChallenger">Challenger (Avancé)</option>
-        </select>
+    <main>
         
-        <div class="divider"></div>
-        <input type="text" id="riotId" class="search-input" data-i18n="placeholder" placeholder="Game Name#Tag (ex: Faker#KR1)">
-        
-    </div>
+        <section id="hero" class="logo-container">
+            <h1>RIFT<span id="fit-text">FIT</span></h1>
+            <p id="game-quote" class="game-subtitle">Where legends are born</p>
+        </section>
 
-    <div id="quick-train-btn" class="quick-train-box disabled-box" onclick="generateWorkout()">
-        <h2 data-i18n="quickTrainTitle">Quick Training</h2>
-        <p data-i18n="quickTrainDesc">Générer un entraînement basé sur le dernier match</p>
-    </div>
-    
-    <div id="loading" data-i18n="loading">Analyse des données Riot en cours...</div>
+        <section id="search-config" class="search-wrapper">
+            <select id="region" class="region-select">
+                <option value="europe">Europe</option>
+                <option value="americas">Americas</option>
+                <option value="asia">Asia</option>
+            </select>
+            
+            <div class="divider"></div>
 
-    <div id="workout-board">
-        <div id="game-status" data-i18n="loss">DÉFAITE</div>
-        <h3 id="player-title" style="margin: 0; color: var(--text-main);">Champion (Rôle)</h3>
-        <div class="stats-kda" id="player-kda">KDA : 0 / 0 / 0</div>
-        
-        <div class="exercise-grid">
-            <div class="exercise-item">
-                <div class="ex-num" id="nb-squats">0</div>
-                <div class="ex-label" id="label-squats" data-i18n="exSquats">Squats (Kills)</div>
+            <select id="difficulty" class="region-select">
+                <option value="iron" data-i18n="diffIron">Iron (Beginner)</option>
+                <option value="gold" data-i18n="diffGold">Gold (Intermediate)</option>
+                <option value="challenger" data-i18n="diffChallenger">Challenger (Advanced)</option>
+            </select>
+            
+            <div class="divider"></div>
+            
+            <input type="text" id="riotId" class="search-input" data-i18n="placeholder" placeholder="Game Name#Tag (ex: Faker#KR1)">
+        </section>
+
+        <section id="actions" class="action-container">
+            <div id="quick-train-btn" class="quick-train-box disabled-box" onclick="generateWorkout('solo')">
+                <h2 data-i18n="quickTrainTitle">Quick Training</h2>
+                <p data-i18n="quickTrainDesc">Generate a workout based on your last match</p>
             </div>
-            <div class="exercise-item">
-                <div class="ex-num" id="nb-pompes">0</div>
-                <div class="ex-label" id="label-pompes" data-i18n="exPushups">Pompes (Morts)</div>
-            </div>
-            <div class="exercise-item">
-                <div class="ex-num" id="nb-abdos">0</div>
-                <div class="ex-label" id="label-abdos" data-i18n="exAbs">Abdos (Assists)</div>
-            </div>
-        </div>
-        <div class="workout-formula">
-            <p>
-                <i class="info-icon">ⓘ</i> 
-                <span data-i18n="formulaDesc">Calculé selon vos stats, votre difficulté et le résultat (Bonus Défaite).</span>
-                <br>
-                <strong data-i18n="minRepNotice">Minimum de 5 répétitions par exercice.</strong>
-            </p>
-        </div>
-    </div>
-    
-    <div class="features-grid">
-        <div class="feature-card">
-            <h3 data-i18n="featCollateral">Collateral</h3>
-            <p data-i18n="featCollateralDesc">Link multiple fitness goals</p>
-        </div>
-        <div class="feature-card">
-            <h3>Based on your weakness</h3>
-            <p>Target your worst stats</p>
-        </div>
-        <div class="feature-card">
-            <h3>Complete Workout</h3>
-            <p>Full-body routine</p>
-        </div>
-    </div>
+            
+            <div id="loading" data-i18n="loading" style="display: none;">Analyzing Riot data...</div>
+        </section>
 
-    <section id="about-anchor" class="about-section">
-        <div class="about-container">
-            <div class="about-icon">
-                <img src="../Assets/questionMark.png" alt="LoL Icon">
-            </div>
-            <div class="about-text" onclick="openOnboarding()" >
-                <h3 data-i18n="aboutTitle">What's RiftFit?</h3>
-                <p data-i18n="aboutShortDesc">Transforme tes stats Riot Games en programme sportif personnalisé.</p>
-            </div>
-             <div class="about-icon">
-                <img src="../Assets/Does_Not_Compute_Emote.png" alt="LoL Icon">
-            </div>
-        </div>
-    </section>
-
-    <div id="onboarding-modal" class="modal">
-    <div class="modal-content onboarding-glass">
-        <span class="close" onclick="closeOnboarding()">&times;</span>
-        
-        <div class="onboarding-header">
-            <img src="../Assets/professor.png" alt="Logo" class="header-icon">
-            <h2 data-i18n="onboardingTitle">RiftFit : Game Hard, Train Harder</h2>
-        </div>
-
-        <div class="onboarding-body">
-            <section class="info-block">
-                <h3 data-i18n="conceptTitle">Le Concept</h3>
-                <p data-i18n="conceptDesc">RiftFit transforme ta frustration ou ton euphorie de fin de game en énergie physique. On récupère tes stats (KDA, placement) et on les convertit en exercices. Plus tu joues (ou plus tu perds...), plus tu deviens fort.</p>
-            </section>
-
-        <section class="roadmap-details">
-            <h3 data-i18n="futureTitle">🚀 Leveling Up (Prochainement)</h3>
-
-            <div class="roadmap-card">
-                <div class="card-visual">
-                    <img src="../Assets/collateral_picture-removebg-preview.png" alt="Collateral Mode">
+        <section id="workout-display">
+            <div id="workout-board" style="display: none;">
                 </div>
-                <div class="card-text">
-                    <h4 data-i18n="roadCollateral">Mode Collateral</h4>
-                    <p data-i18n="roadCollateralDesc">Parce qu'on ne regarde pas son partenaire jouer sans rien faire. Si l'un joue, l'autre participe physiquement ! Le sport devient un duo pour doubler la motivation (et les résultats).</p>
+        </section>
+
+        <section id="features" class="features-grid">
+            <div id="collateral-btn" class="feature-card action-box collateral-box disabled-box" onclick="generateWorkout('collateral')">
+                <h3 data-i18n="featCollateral">Collateral</h3>
+                <p data-i18n="featCollateralDesc">Link multiple fitness goals</p>
+            </div>
+            
+            <div class="feature-card coming-soon">
+                <h3>Based on your weakness <span class="soon-badge">Soon</span></h3>
+                <p>Target your worst stats</p>
+            </div>
+            
+            <div class="feature-card coming-soon">
+                <h3>Complete Workout <span class="soon-badge">Soon</span></h3>
+                <p>Full-body routine</p>
+            </div>
+        </section>
+
+        <section id="info-anchors">
+            <div id="about-anchor" class="about-section" onclick="openOnboarding()">
+                <div class="about-container">
+                    <div class="about-icon"><img src="../Assets/questionMark.png" alt="Question Icon"></div>
+                    <div class="about-text">
+                        <h3 data-i18n="aboutTitle">What's RiftFit?</h3>
+                        <p data-i18n="aboutShortDesc">Transform your Riot Games stats into a personalized fitness program.</p>
+                    </div>
+                    <div class="about-icon"><img src="../Assets/Does_Not_Compute_Emote.png" alt="Blitzcrank Emote"></div>
                 </div>
             </div>
 
-            <hr class="roadmap-divider">
-
-            <div class="roadmap-card">
-                <div class="card-visual">
-                    <img src="../Assets/Weakness_Icon-removebg-preview.png" alt="Weakness Mode">
-                </div>
-                <div class="card-text">
-                    <h4 data-i18n="roadWeakness">Based on your weakness</h4>
-                    <p data-i18n="roadWeaknessDesc">Le KDA ne dit pas tout. Tu es mort à cause d'un manque de vision ? Fais des exercices pour t'en souvenir. Un entraînement basé sur tes vraies failles (CS/min, Ward score, Objectifs) pour progresser en jeu et en vrai.</p>
-                </div>
-            </div>
-
-            <hr class="roadmap-divider">
-
-            <div class="roadmap-card">
-                <div class="card-visual">
-                    <img src="../Assets/Hype_Kitty_Emote.png" alt="Complete Workout">
-                </div>
-                <div class="card-text">
-                    <h4 data-i18n="roadComplete">Complete Workout</h4>
-                    <p data-i18n="roadCompleteDesc">Pour les guerriers qui ne veulent pas juste quelques pompes. Un programme full-body structuré qui s'adapte à la durée de ta session de jeu pour une vraie transformation physique.</p>
+            <div id="advices-anchor" class="about-section advices-theme" onclick="openAdvices()">
+                <div class="about-container">
+                    <div class="about-icon"><img src="../Assets/Now_See_Here_Emote.png" alt="Coach Icon"></div>
+                    <div class="about-text">
+                        <h3 data-i18n="advicesTitle">Some advices?</h3>
+                        <p data-i18n="advicesShortDesc">Learn how to perform exercises safely based on your level.</p>
+                    </div>
+                    <div class="about-icon"><img src="../Assets/Much_Love_Emote.png" alt="Advice Emote"></div>
                 </div>
             </div>
         </section>
-        </div>
 
-        <button class="cta-btn" onclick="closeOnboarding()" data-i18n="onboardingCloseBtn">C'est compris, je suis prêt !</button>
-    </div>
-</div>
+    </main>
 
-    <div id="legal-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeLegal()">&times;</span>
-            <div id="legal-text"></div>
-        </div>
-    </div>
-    <script src="app.js"></script>
-</body>
-<footer class="main-footer">
-    <div class="footer-content">
-        <p class="riot-disclaimer" data-i18n="riotDisclaimer">
-            </p>
+<aside id="modals">
+        
+        <div id="onboarding-modal" class="modal">
+            <div class="modal-content onboarding-glass">
+                <span class="close" onclick="closeOnboarding()">&times;</span>
+                <header class="onboarding-header">
+                    <img src="../Assets/professor.png" alt="Professor" class="header-icon">
+                    <h2 data-i18n="onboardingTitle">RiftFit : Game Hard, Train Harder</h2>
+                </header>
 
-        <div class="footer-bottom">
-            <p data-i18n="footerCopyright">© 2026 RiftFit. Tous droits réservés.</p>
-            <div class="footer-links">
-                <a href="#" data-i18n="linkLegal" onclick="showLegal('mentions')">Mentions Légales</a>
-                <a href="#" data-i18n="linkPrivacy" onclick="showLegal('privacy')">Confidentialité</a>
+                <div class="onboarding-body">
+                    <section class="info-block">
+                        <h3 data-i18n="conceptTitle">Le Concept</h3>
+                        <p data-i18n="conceptDesc">RiftFit transforme ta frustration ou ton euphorie de fin de game en énergie physique. On récupère tes stats (KDA, placement) et on les convertit en exercices.</p>
+                    </section>
+
+                    <section class="roadmap-details">
+                        <h3 data-i18n="futureTitle">🚀 Leveling Up</h3>
+
+                        <div class="roadmap-card">
+                            <div class="card-visual"><img src="../Assets/collateral_picture-removebg-preview.png" alt="Collateral"></div>
+                            <div class="card-text">
+                                <h4 data-i18n="roadCollateral">Mode Collateral</h4>
+                                <p data-i18n="roadCollateralDesc">Si l'un joue, l'autre participe physiquement ! Le sport devient un duo pour doubler la motivation.</p>
+                            </div>
+                        </div>
+
+                        <hr class="roadmap-divider">
+
+                        <div class="roadmap-card">
+                            <div class="card-visual"><img src="../Assets/Weakness_Icon-removebg-preview.png" alt="Weakness"></div>
+                            <div class="card-text">
+                                <h4 data-i18n="roadWeakness">Based on your weakness</h4>
+                                <p data-i18n="roadWeaknessDesc">Un entraînement basé sur tes vraies failles (CS/min, vision) pour progresser en jeu et en vrai.</p>
+                            </div>
+                        </div>
+
+                        <hr class="roadmap-divider">
+
+                        <div class="roadmap-card">
+                            <div class="card-visual"><img src="../Assets/Hype_Kitty_Emote.png" alt="Complete Workout"></div>
+                            <div class="card-text">
+                                <h4 data-i18n="roadComplete">Complete Workout</h4>
+                                <p data-i18n="roadCompleteDesc">Un programme full-body structuré qui s'adapte à la durée de ta session pour une vraie transformation.</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <button class="cta-btn" onclick="closeOnboarding()" data-i18n="onboardingCloseBtn">C'EST PARTI !</button>
             </div>
         </div>
-    </div>
-</footer>
+
+        <div id="advices-modal" class="modal">
+            <div class="modal-content onboarding-glass">
+                <span class="close" onclick="closeAdvices()">&times;</span>
+                <header class="onboarding-header">
+                    <img src="../Assets/Vi_Trainning.png" alt="Coach" class="header-icon">
+                    <h2 data-i18n="advicesModalTitle">Guide de Bienveillance</h2>
+                </header>
+
+                <div class="onboarding-body">
+                    <div class="advice-category">
+                        <h3 data-i18n="warmupTitle">🔥 Échauffement : Préparation de Match</h3>
+                        <div class="roadmap-card">
+                            <div class="card-visual"><img src="../Assets/Fired_Up_Emote.png" alt="Warmup"></div>
+                            <div class="card-text">
+                                <p data-i18n="warmupDesc">Réveille tes articulations (poignets, épaules, nuque) pendant 2 minutes pour éviter les blessures.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="roadmap-divider">
+
+                    <div class="advice-category">
+                        <h3 data-i18n="safetyPushupsTitle">🛡️ Protection : Buff tes Pompes</h3>
+                        <div class="roadmap-card">
+                            <div class="card-text">
+                                <h4 data-i18n="safetyPushupsSub">Zéro blessure, 100% gain</h4>
+                                <p data-i18n="safetyPushupsDesc"><strong>Le dos :</strong> Droit comme une tour. <strong>Coudes :</strong> Angle de 45°. <strong>Variante :</strong> Sur les genoux !</p>
+                                <div class="advice-full-visual">
+                                    <img src="../Assets/pushUps.png" alt="Safety Diagram">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <hr class="roadmap-divider">
+
+                    <div class="advice-category">
+                        <h3 data-i18n="postureTitle">🧘 Posture Anti-Tilt (Post-Game)</h3>
+                        <div class="roadmap-card">
+                            <div class="card-visual"><img src="../Assets/Hype_Kitty_Emote.png" alt="Posture"></div>
+                            <div class="card-text">
+                                <h4 data-i18n="postureSub">Débloque tes épaules</h4>
+                                <p data-i18n="postureDesc">Ouvre ta cage thoracique et étire tes bras vers l'arrière pour contrer la posture voûtée du gamer.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="cta-btn" onclick="closeAdvices()" data-i18n="advicesCloseBtn">C'est noté, Coach !</button>
+            </div>
+        </div>
+
+    </aside>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <p class="riot-disclaimer" data-i18n="riotDisclaimer"></p>
+            <div class="footer-bottom">
+                <p data-i18n="footerCopyright">© 2026 RiftFit. All rights reserved.</p>
+                <nav class="footer-links">
+                    <a href="#" data-i18n="linkLegal" onclick="showLegal('mentions')">Legal Mentions</a>
+                    <a href="#" data-i18n="linkPrivacy" onclick="showLegal('privacy')">Privacy Policy</a>
+                </nav>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
 </html>
